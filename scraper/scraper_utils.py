@@ -471,7 +471,7 @@ class VimeoScraper(MediaScraper):
             self.download()
 
         if self.soup:
-            video_url = self.soup.find('meta', itemprop = 'embedUrl')['content'].replace("http", "https")
+            video_url = self.soup.find('meta', itemprop = 'embedUrl')['content'].replace("http:", "https:")
             return dict(video_id = self.video_id,
                         video_url = video_url,
                         type = self.domains[0])
