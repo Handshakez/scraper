@@ -376,7 +376,10 @@ class YoutubeScraper(MediaScraper):
         if self.soup:
             video_url = self.soup.find('meta', dict(name = 'twitter:player'))
             if video_url:
-                video_url = video_url['value']
+                for key in ['content', 'value']:
+                    if key in video_url:
+                        video_url = video_url[key]
+                        break
             else:
                 video_url = self.soup.find('link', itemprop = 'embedURL')['href']
                 video_url = video_url.replace("http", "https").replace("/v/", "/embed/")
