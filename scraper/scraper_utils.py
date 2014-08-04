@@ -377,7 +377,7 @@ class YoutubeScraper(MediaScraper):
             video_url = self.soup.find('meta', dict(name = 'twitter:player'))
             if video_url:
                 for key in ['content', 'value']:
-                    if key in video_url:
+                    if key in video_url.attrMap:    # shazam.
                         video_url = video_url[key]
                         break
             else:
