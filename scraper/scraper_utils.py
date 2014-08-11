@@ -456,6 +456,11 @@ class VimeoScraper(MediaScraper):
     media_template = '<embed src="$video_id" width="480" height="640" wmode="transparent" type="application/x-shockwave-flash"> </embed>'
     video_id_rx = re.compile('.*/(.*)')
 
+    embed_metas = [
+        { 'itemprop' : 'embedUrl'},
+        { 'name' : 'twitter:player' }
+    ]
+
     def largest_image_url(self, default=True):
         """
         This code is written looking into the future
@@ -474,10 +479,16 @@ class VimeoScraper(MediaScraper):
             self.download()
 
         if self.soup:
-            video_url = self.soup.find('meta', itemprop = 'embedUrl')['content'].replace("http:", "https:")
+            video_url = None
+            for attrs in VimeoScraper.embed_metas:
+                candidate = self.soup.find('meta', attrs = attrs)
+                if candidate:
+                    video_url = candidate['content'].replace("http:", "https:")
+                    break
             return dict(video_id = self.video_id,
                         video_url = video_url,
                         type = self.domains[0])
+
 
 class BreakScraper(MediaScraper):
     domains = ['break.com']
