@@ -233,9 +233,13 @@ class Scraper:
                 small_max_area = area
                 small_max_url = image_url
 
+        # returning the tuple here caused problems elsewhere.
+        # Everythign else expects this method to return a single value
         if not max_url and self.small_image:
-            return small_max_url, True
-        return max_url, False
+            #return small_max_url, True
+            return small_max_url
+        #return max_url, False
+        return max_url
 
     def thumbnail(self):
         image_url = self.largest_image_url()
